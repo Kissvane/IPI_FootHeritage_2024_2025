@@ -40,7 +40,7 @@ namespace IPI_FootHeritage_2024_2025
             }
 
             //reception
-            target.ReceiptPass(result.receptionDifficulty);
+            target.ReceiptPass(receptionDifficulty);
         }
 
         public void ReceiptPass(int receptionDifficulty)
@@ -81,7 +81,7 @@ namespace IPI_FootHeritage_2024_2025
             }
         }
 
-        public void Shoot(List<Player> opponents, Goalkeeper goalkeeper)
+        public void Shoot(List<Player> opponents)
         {
             int shootScore = Strength + Speed + GetLuck();
             MyLog($"{Name} tire. Shootscore {shootScore}");
@@ -89,8 +89,7 @@ namespace IPI_FootHeritage_2024_2025
             {
                 return;
             }
-
-            goalkeeper.StopShoot(shootScore);
+            MyLog($"{Name} marque un but.");
         }
 
         public bool TryToIntercept(int shootScore, List<Player> opponents)
