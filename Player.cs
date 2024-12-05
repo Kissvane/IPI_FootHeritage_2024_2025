@@ -34,9 +34,13 @@ namespace IPI_FootHeritage_2024_2025_v2
             MyLog("Je suis un joueur.");
         }*/
 
-        public void Pass(Player target, List<Player> opponents)
+        public virtual void Pass(Player target, List<Player> opponents)
         {
             int interceptionDifficulty = CalculateInterceptionDifficultyScore();
+            if (this is I_AerialPass aerial)
+            {
+               interceptionDifficulty = aerial.ImproveInterceptionDifficulty(interceptionDifficulty);
+            }
             int receptionDifficulty = CalculateReceptionDifficultyScore();
             MyLog($"{Name} fait une passe a {target.Name}. Precision {interceptionDifficulty} | difficulté de reception {receptionDifficulty}");
             if (TryToIntercept(interceptionDifficulty, opponents))
@@ -50,7 +54,8 @@ namespace IPI_FootHeritage_2024_2025_v2
 
         protected int CalculateInterceptionDifficultyScore()
         {
-            return Agility + Reflexs + GetLuck();
+            int result = Agility + Reflexs + GetLuck();
+            return result;
         }
 
         protected virtual int CalculateReceptionDifficultyScore()
@@ -76,7 +81,7 @@ namespace IPI_FootHeritage_2024_2025_v2
             }
         }
 
-        protected virtual void MyLog(string value)
+        public virtual void MyLog(string value)
         {
             Console.WriteLine(value);
         }
@@ -98,7 +103,13 @@ namespace IPI_FootHeritage_2024_2025_v2
 
         public void Shoot(GoalKeeper keeper, List<Player> opponents)
         {
-            int shootScore = Strength + Speed + GetLuck();
+            int shootScore = CalculateShootScore();
+            if (this is I_Opportunist)
+            {
+                int luckBoost = GetLuck();
+                MyLog($"{Name} est opportuniste, il surprend le gardien ce qui améliore sa frappe. ShootScore {shootScore} => {shootScore + luckBoost}");
+                shootScore += luckBoost;
+            }
             MyLog($"{Name} tire. Shootscore {shootScore}");
             if (TryToIntercept(shootScore, opponents))
             {
@@ -115,6 +126,11 @@ namespace IPI_FootHeritage_2024_2025_v2
             }
 
             MyLog($"{Name} marque un but.");
+        }
+
+        protected int CalculateShootScore()
+        {
+            return Strength + Speed + GetLuck();
         }
 
         public bool TryToIntercept(int shootScore, List<Player> opponents)

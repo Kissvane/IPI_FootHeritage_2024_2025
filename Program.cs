@@ -8,6 +8,7 @@
             Player marc = new Forward("Marc");
             Player bruce = new Defender("Bruce");
             Player tom = new GoalKeeper("Tom");
+            Player machin = new OffensiveMidfielder("Machin");
             //example
             /*olive.QuiSuisJe();
             bruce.QuiSuisJe();
@@ -17,9 +18,9 @@
 
             olive.Dribble(bruce);
             
-            olive.Pass(marc, new List<Player>(){});
+            machin.Pass(marc, new List<Player>(){});
 
-            marc.Shoot((GoalKeeper)tom, null);
+            machin.Shoot((GoalKeeper)tom, null);
         }
     }
 }
