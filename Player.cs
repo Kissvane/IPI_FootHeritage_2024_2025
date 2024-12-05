@@ -101,6 +101,16 @@ namespace IPI_FootHeritage_2024_2025_v2
             }
         }
 
+        protected int CalculateInterceptionScore()
+        {
+            int result = Agility + Reflexs + GetLuck();
+            if (this is I_ImprovedInterception improved)
+            {
+               result = improved.ImproveInterception(result);
+            }
+            return result;
+        } 
+
         public void Shoot(GoalKeeper keeper, List<Player> opponents)
         {
             int shootScore = CalculateShootScore();
@@ -167,6 +177,11 @@ namespace IPI_FootHeritage_2024_2025_v2
         {
             int result = Strength + Speed + GetLuck();
             MyLog($"{Name} tacle {opponent.Name}. TacleScore {result}");
+            if (this is I_LuckyTackle tackle)
+            {
+                result += GetLuck();
+                MyLog($"{Name} fait un tacle chanceux. TacleScore {result}");
+            }
             return result;
         }
 
