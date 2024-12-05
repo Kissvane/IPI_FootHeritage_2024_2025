@@ -36,8 +36,8 @@ namespace IPI_FootHeritage_2024_2025_v2
 
         public void Pass(Player target, List<Player> opponents)
         {
-            int interceptionDifficulty = Agility + Reflexs + GetLuck();
-            int receptionDifficulty = 200 - (Agility + Strength + GetLuck());
+            int interceptionDifficulty = CalculateInterceptionDifficultyScore();
+            int receptionDifficulty = CalculateReceptionDifficultyScore();
             MyLog($"{Name} fait une passe a {target.Name}. Precision {interceptionDifficulty} | difficulté de reception {receptionDifficulty}");
             if (TryToIntercept(interceptionDifficulty, opponents))
             {
@@ -48,7 +48,17 @@ namespace IPI_FootHeritage_2024_2025_v2
             target.ReceiptPass(receptionDifficulty);
         }
 
-        public void ReceiptPass(int receptionDifficulty)
+        protected int CalculateInterceptionDifficultyScore()
+        {
+            return Agility + Reflexs + GetLuck();
+        }
+
+        protected virtual int CalculateReceptionDifficultyScore()
+        {
+            return 200 - (Agility + Strength + GetLuck());
+        }
+
+        public virtual void ReceiptPass(int receptionDifficulty)
         {
             int reception = Agility + Reflexs + GetLuck();
             ShowReceptionResult(reception, receptionDifficulty);
@@ -86,7 +96,7 @@ namespace IPI_FootHeritage_2024_2025_v2
             }
         }
 
-        public void Shoot(List<Player> opponents)
+        public void Shoot(GoalKeeper keeper, List<Player> opponents)
         {
             int shootScore = Strength + Speed + GetLuck();
             MyLog($"{Name} tire. Shootscore {shootScore}");
@@ -94,6 +104,16 @@ namespace IPI_FootHeritage_2024_2025_v2
             {
                 return;
             }
+
+            //le gardien essaye d'arrêter le but
+            if(keeper != null)
+            {
+                if (keeper.TryToStopShoot(shootScore))
+                {
+                    return;
+                }
+            }
+
             MyLog($"{Name} marque un but.");
         }
 
