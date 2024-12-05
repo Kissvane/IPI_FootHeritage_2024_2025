@@ -41,6 +41,10 @@ namespace IPI_FootHeritage_2024_2025_v2
             {
                interceptionDifficulty = aerial.ImproveInterceptionDifficulty(interceptionDifficulty);
             }
+            if (this is I_ImprovedAction action)
+            {
+                interceptionDifficulty = action.ImproveAction(interceptionDifficulty, Actions.Pass);
+            }
             int receptionDifficulty = CalculateReceptionDifficultyScore();
             MyLog($"{Name} fait une passe a {target.Name}. Precision {interceptionDifficulty} | difficulté de reception {receptionDifficulty}");
             if (TryToIntercept(interceptionDifficulty, opponents))
@@ -187,9 +191,14 @@ namespace IPI_FootHeritage_2024_2025_v2
 
         public void Dribble(Player opponent)
         {
-            int dribbleScore = Agility + Speed + GetLuck();
+            int dribbleScore = CalculateDribbleScore();
             MyLog($"{Name} tente de dribbler {opponent.Name}. DribbleScore {dribbleScore}");
             opponent.Tackle(dribbleScore, this);
+        }
+
+        protected int CalculateDribbleScore()
+        {
+            return Agility + Speed + GetLuck();
         }
 
         public int GetLuck()

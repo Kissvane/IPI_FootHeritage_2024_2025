@@ -5,8 +5,9 @@
         static void Main(string[] args)
         {
             Player olive = new MiddleFielder("Olive");
-            Player marc = new Forward("Marc");
-            Player bruce = new Defender("Bruce");
+            Player sonic = new Winger("Sonic");
+            Player marc = new OffensiveMidfielder("Marc");
+            Player bruce = new DefensiveMidFielder("Bruce");
             Player tom = new GoalKeeper("Tom");
             Player machin = new OffensiveMidfielder("Machin");
             //example
@@ -17,10 +18,11 @@
             olive.Dribble(marc);
 
             olive.Dribble(bruce);
-            
-            machin.Pass(marc, new List<Player>(){});
 
-            machin.Shoot((GoalKeeper)tom, null);
+            sonic.Pass(machin, null);
+            
+            marc.Pass(machin, new List<Player>(){bruce});
+            marc.Shoot((GoalKeeper)tom, null);
         }
     }
 }
