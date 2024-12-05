@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IPI_FootHeritage_2024_2025
+namespace IPI_FootHeritage_2024_2025_v2
 {
     public class Player
     {
@@ -28,6 +28,11 @@ namespace IPI_FootHeritage_2024_2025
             Luck = luck;
             random = new Random(GetSeed());
         }
+
+        /*public virtual void QuiSuisJe()
+        {
+            MyLog("Je suis un joueur.");
+        }*/
 
         public void Pass(Player target, List<Player> opponents)
         {
@@ -111,8 +116,7 @@ namespace IPI_FootHeritage_2024_2025
 
         public void Tackle(int dribbleScore, Player opponent)
         {
-            int tackleScore = Strength + Speed + GetLuck();
-            MyLog($"{Name} tackle {opponent.Name}. TacleScore {tackleScore}");
+            int tackleScore = CalculateTackleScore(opponent);
             if (tackleScore >= dribbleScore)
             {
                 MyLog($"{Name} récupère le ballon avec son tacle. Tacle score {tackleScore} >= dribble score {dribbleScore}");
@@ -121,6 +125,13 @@ namespace IPI_FootHeritage_2024_2025
             {
                 MyLog($"{Name} ne réussi pas son tacle. Tacle score {tackleScore} < dribble score {dribbleScore}");
             }
+        }
+
+        protected virtual int CalculateTackleScore(Player opponent)
+        {
+            int result = Strength + Speed + GetLuck();
+            MyLog($"{Name} tacle {opponent.Name}. TacleScore {result}");
+            return result;
         }
 
         public void Dribble(Player opponent)
